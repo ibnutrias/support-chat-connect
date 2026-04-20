@@ -13,8 +13,11 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AppQueueRouteImport } from './routes/_app/queue'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { Route as AppTicketsTicketIdRouteImport } from './routes/_app/tickets/$ticketId'
+import { Route as AppAdminUsersRouteImport } from './routes/_app/admin/users'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -35,6 +38,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppQueueRoute = AppQueueRouteImport.update({
+  id: '/queue',
+  path: '/queue',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -45,12 +58,20 @@ const AppTicketsTicketIdRoute = AppTicketsTicketIdRouteImport.update({
   path: '/tickets/$ticketId',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAdminUsersRoute = AppAdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/dashboard': typeof AppDashboardRoute
+  '/queue': typeof AppQueueRoute
+  '/settings': typeof AppSettingsRoute
+  '/admin/users': typeof AppAdminUsersRoute
   '/tickets/$ticketId': typeof AppTicketsTicketIdRoute
 }
 export interface FileRoutesByTo {
@@ -58,6 +79,9 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/dashboard': typeof AppDashboardRoute
+  '/queue': typeof AppQueueRoute
+  '/settings': typeof AppSettingsRoute
+  '/admin/users': typeof AppAdminUsersRoute
   '/tickets/$ticketId': typeof AppTicketsTicketIdRoute
 }
 export interface FileRoutesById {
@@ -67,13 +91,32 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/queue': typeof AppQueueRoute
+  '/_app/settings': typeof AppSettingsRoute
+  '/_app/admin/users': typeof AppAdminUsersRoute
   '/_app/tickets/$ticketId': typeof AppTicketsTicketIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signup' | '/dashboard' | '/tickets/$ticketId'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/dashboard'
+    | '/queue'
+    | '/settings'
+    | '/admin/users'
+    | '/tickets/$ticketId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/dashboard' | '/tickets/$ticketId'
+  to:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/dashboard'
+    | '/queue'
+    | '/settings'
+    | '/admin/users'
+    | '/tickets/$ticketId'
   id:
     | '__root__'
     | '/'
@@ -81,6 +124,9 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/_app/dashboard'
+    | '/_app/queue'
+    | '/_app/settings'
+    | '/_app/admin/users'
     | '/_app/tickets/$ticketId'
   fileRoutesById: FileRoutesById
 }
@@ -121,6 +167,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/queue': {
+      id: '/_app/queue'
+      path: '/queue'
+      fullPath: '/queue'
+      preLoaderRoute: typeof AppQueueRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
@@ -135,16 +195,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTicketsTicketIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/admin/users': {
+      id: '/_app/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AppAdminUsersRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
+  AppQueueRoute: typeof AppQueueRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppAdminUsersRoute: typeof AppAdminUsersRoute
   AppTicketsTicketIdRoute: typeof AppTicketsTicketIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
+  AppQueueRoute: AppQueueRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppAdminUsersRoute: AppAdminUsersRoute,
   AppTicketsTicketIdRoute: AppTicketsTicketIdRoute,
 }
 
